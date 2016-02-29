@@ -40,6 +40,7 @@
     <orderEntry type="library" name="Maven: org.eclipse.persistence:org.eclipse.persistence.core:2.6.0" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.persistence:org.eclipse.persistence.asm:2.6.0" level="project" />
     <orderEntry type="library" name="Maven: org.glassfish:javax.json:1.0.4" level="project" />
+    <orderEntry type="library" name="Maven: org.json:json:20160212" level="project" />
     <orderEntry type="library" name="Maven: com.intellij:annotations:12.0" level="project" />
   </component>
 </module>

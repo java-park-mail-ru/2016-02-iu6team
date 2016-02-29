@@ -1,7 +1,7 @@
 package rest;
 
 import org.jetbrains.annotations.NotNull;
-
+import org.json.JSONObject;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -9,6 +9,7 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public class UserProfile {
     private static final AtomicLong ID_GENERATOR = new AtomicLong(0);
+    @NotNull
     private long id;
     @NotNull
     private String login;
@@ -16,7 +17,7 @@ public class UserProfile {
     private String password;
 
     public UserProfile() {
-        this.id = ID_GENERATOR.getAndIncrement();
+        id = ID_GENERATOR.getAndIncrement();
         login = "";
         password = "";
     }
@@ -33,6 +34,12 @@ public class UserProfile {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getIdByJson() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("id", id);
+        return jsonObject.toString();
     }
 
     @NotNull

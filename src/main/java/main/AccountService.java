@@ -19,7 +19,6 @@ public class AccountService {
     }
 
     public Collection<UserProfile> getAllUsers() {
-
         return users.values();
     }
 
@@ -30,8 +29,8 @@ public class AccountService {
         return true;
     }
 
-    public boolean checkExists(String userName, UserProfile userProfile) {
-        return (!users.containsKey(userName));
+    public boolean checkExists(String userName) {
+        return users.containsKey(userName);
     }
 
     public UserProfile getUser(String userName) {

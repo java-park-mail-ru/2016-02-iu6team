@@ -2,7 +2,7 @@ from urllib2 import Request, urlopen
 
 values = """
   {
-    "login": "test3",
+    "login": "test",
     "password": "test"
   }
 """
@@ -17,8 +17,8 @@ print response_body
 
 values = """
   {
-    "login": "test4",
-    "password": "test1"
+    "login": "dima",
+    "password": "111"
   }
 """
 
@@ -32,8 +32,8 @@ print response_body
 
 values = """
   {
-    "login": "test5",
-    "password": "test2"
+    "login": "admin",
+    "password": "qwerty"
   }
 """
 
@@ -44,3 +44,4 @@ request = Request('http://localhost:8080/api/user', data=values, headers=headers
 
 response_body = urlopen(request).read()
 print response_body
+
