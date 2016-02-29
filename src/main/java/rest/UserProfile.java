@@ -2,11 +2,13 @@ package rest;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.concurrent.atomic.AtomicLong;
+
 /**
  * @author esin88
  */
 public class UserProfile {
-    @NotNull
+    private static final AtomicLong ID_GENERATOR = new AtomicLong(0);
     private long id;
     @NotNull
     private String login;
@@ -14,23 +16,22 @@ public class UserProfile {
     private String password;
 
     public UserProfile() {
-        id = 0;
+        this.id = ID_GENERATOR.getAndIncrement();
         login = "";
         password = "";
     }
 
-    public UserProfile(@NotNull long id, @NotNull String login, @NotNull String password) {
-        this.id = id;
+    public UserProfile(@NotNull String login, @NotNull String password) {
+        this.id = ID_GENERATOR.getAndIncrement();
         this.login = login;
         this.password = password;
     }
 
-    @NotNull
     public long getId() {
         return id;
     }
 
-    public void setId(@NotNull long id) {
+    public void setId(long id) {
         this.id = id;
     }
 

@@ -5,7 +5,6 @@ import rest.UserProfile;
 import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicLong;
 
 
 /**
@@ -13,11 +12,10 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public class AccountService {
     private Map<String, UserProfile> users = new ConcurrentHashMap<>();
-    private static final AtomicLong ID_GENERATOR = new AtomicLong(0);
 
     public AccountService() {
-        users.put("admin", new UserProfile(ID_GENERATOR.getAndIncrement(),"admin", "admin"));
-        users.put("guest", new UserProfile(ID_GENERATOR.getAndIncrement(),"guest", "12345"));
+        //users.put("admin", new UserProfile("admin", "admin"));
+        //users.put("guest", new UserProfile("guest", "12345"));
     }
 
     public Collection<UserProfile> getAllUsers() {
@@ -30,6 +28,10 @@ public class AccountService {
             return false;
         users.put(userName, userProfile);
         return true;
+    }
+
+    public boolean checkExists(String userName, UserProfile userProfile) {
+        return (!users.containsKey(userName));
     }
 
     public UserProfile getUser(String userName) {

@@ -51,4 +51,15 @@ public class Users {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
     }
+
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response loginUser(UserProfile user, @Context HttpHeaders headers){
+        if(accountService.checkExists(user.getLogin(), user)){
+            return Response.status(Response.Status.OK).entity(user.getId()).build();
+        } else {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+    }
 }
