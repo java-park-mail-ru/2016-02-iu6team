@@ -35,12 +35,13 @@ public class Users {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUserById(@PathParam("id") long id, @Context HttpServletRequest request) {
         final String sessionId = request.getSession().getId();
-        if (accountService.checkAuth(sessionId)) {
-            final UserProfile user = accountService.getUserById(id);
-            if (user == null) {
+        UserProfile user = accountService.giveProfileFromSessionId(sessionId);
+        if ((accountService.checkAuth(sessionId))&&(user.getLogin().equals(accountService.getUserById(id).getLogin()))) {
+            final UserProfile userTemp = accountService.getUserById(id);
+            if (userTemp == null) {
                 return Response.status(Response.Status.FORBIDDEN).build();
             } else {
-                return Response.status(Response.Status.OK).entity(user).build();
+                return Response.status(Response.Status.OK).entity(userTemp).build();
             }
         } else {
             return Response.status(Response.Status.UNAUTHORIZED).build();
@@ -64,7 +65,7 @@ public class Users {
     @Produces(MediaType.APPLICATION_JSON)
     public Response editUser(@PathParam("id") long id, UserProfile user, @Context HttpServletRequest request) {
         final String sessionId = request.getSession().getId();
-        if (accountService.checkAuth(sessionId)) {
+        if ((accountService.checkAuth(sessionId))&&(user.getLogin().equals(accountService.getUserById(id).getLogin()))) {
             accountService.editUser(id, user);
             return Response.status(Response.Status.OK).entity(accountService.getIdByJson(id)).build();
         } else {
@@ -77,8 +78,10 @@ public class Users {
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteUser(@PathParam("id") long id, @Context HttpServletRequest request) {
         final String sessionId = request.getSession().getId();
-        if (accountService.checkAuth(sessionId)) {
+        UserProfile user = accountService.giveProfileFromSessionId(sessionId);
+        if ((accountService.checkAuth(sessionId))&&(user.getLogin().equals(accountService.getUserById(id).getLogin()))) {
             accountService.deleteUser(id);
+            accountService.deleteSession(sessionId);
             return Response.status(Response.Status.OK).build();
         } else {
             return Response.status(Response.Status.FORBIDDEN).entity("wrong user").build();
