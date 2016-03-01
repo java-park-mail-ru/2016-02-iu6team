@@ -2,6 +2,8 @@ package rest;
 
 import main.AccountService;
 
+import org.jetbrains.annotations.Nullable;
+
 import javax.inject.Singleton;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;

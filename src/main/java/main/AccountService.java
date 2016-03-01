@@ -1,5 +1,6 @@
 package main;
 
+import org.jetbrains.annotations.Nullable;
 import org.json.JSONObject;
 import rest.UserProfile;
 
@@ -14,9 +15,6 @@ import java.util.Map;
 public class AccountService {
     private Map<String, UserProfile> users = new ConcurrentHashMap<>();
     private Map<String, UserProfile> sessions = new ConcurrentHashMap<>();
-
-    public AccountService() {
-    }
 
     public Collection<UserProfile> getAllUsers() {
         return users.values();
@@ -68,6 +66,7 @@ public class AccountService {
         }
     }
 
+    @Nullable
     public UserProfile getUserById(long id) {
         for(Map.Entry<String, UserProfile> userTemp : users.entrySet()){
             if(userTemp.getValue().getId() == id){
