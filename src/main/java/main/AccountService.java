@@ -12,10 +12,9 @@ import java.util.Map;
  */
 public class AccountService {
     private Map<String, UserProfile> users = new ConcurrentHashMap<>();
+    private Map<String, UserProfile> sessions = new ConcurrentHashMap<>();
 
     public AccountService() {
-        //users.put("admin", new UserProfile("admin", "admin"));
-        //users.put("guest", new UserProfile("guest", "12345"));
     }
 
     public Collection<UserProfile> getAllUsers() {
@@ -38,5 +37,13 @@ public class AccountService {
 
     public UserProfile getUser(String userName) {
         return users.get(userName);
+    }
+
+    public void addSession(String sessionId, UserProfile user) {
+        sessions.put(sessionId, user);
+    }
+
+    public boolean checkAuth(String sessionId) {
+        return sessions.containsKey(sessionId);
     }
 }
