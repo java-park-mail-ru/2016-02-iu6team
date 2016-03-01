@@ -44,23 +44,11 @@ public class Users {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createUser(UserProfile user, @Context HttpHeaders headers){
-        if(accountService.addUser(user.getLogin(), user)){
+    public Response createUser(UserProfile user, @Context HttpHeaders headers) {
+        if (accountService.addUser(user.getLogin(), user)) {
             return Response.status(Response.Status.OK).entity(user.getLogin()).build();
         } else {
             return Response.status(Response.Status.FORBIDDEN).build();
-        }
-    }
-
-    @PUT
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response loginUser(UserProfile user, @Context HttpHeaders headers){
-        long temp = accountService.checkExists(user);
-        if(temp != -1){
-            return Response.status(Response.Status.OK).entity(user.getIdByJson(temp)).build();
-        } else {
-            return Response.status(Response.Status.BAD_REQUEST).build();
         }
     }
 }
