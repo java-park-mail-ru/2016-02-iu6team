@@ -51,4 +51,16 @@ public class Users {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
     }
+
+    @POST
+    @Path("{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response editUser(@PathParam("id") long id, UserProfile user) {
+        if(accountService.changeUserInfo(id,user)){
+            return Response.status(Response.Status.OK).entity(accountService.getIdByJson(id)).build();
+        }else {
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
+    }
 }

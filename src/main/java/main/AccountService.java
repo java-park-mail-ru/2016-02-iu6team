@@ -40,15 +40,6 @@ public class AccountService {
         return users.get(userName);
     }
 
-    public UserProfile getUserById(long id) {
-        for(Map.Entry<String, UserProfile> userTemp : users.entrySet()){
-            if(userTemp.getValue().getId() == id){
-                return userTemp.getValue();
-            }
-        }
-        return null;
-    }
-
     public void addSession(String sessionId, UserProfile user) {
         sessions.put(sessionId, user);
     }
@@ -75,5 +66,25 @@ public class AccountService {
         else {
             return false;
         }
+    }
+
+    public UserProfile getUserById(long id) {
+        for(Map.Entry<String, UserProfile> userTemp : users.entrySet()){
+            if(userTemp.getValue().getId() == id){
+                return userTemp.getValue();
+            }
+        }
+        return null;
+    }
+
+    public boolean changeUserInfo(long id, UserProfile user){
+        for(Map.Entry<String, UserProfile> userTemp : users.entrySet()){
+            if(userTemp.getValue().getId() == id){
+                user.setId(users.get(userTemp.getKey()).getId());
+                users.replace(userTemp.getKey(), user);
+                return true;
+            }
+        }
+        return false;
     }
 }
