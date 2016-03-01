@@ -15,7 +15,7 @@ public class UserProfile {
     private String password;
 
     public UserProfile() {
-        id = -1;
+        this.id = -1;
         login = "";
         password = "";
     }
@@ -33,7 +33,7 @@ public class UserProfile {
     }
 
     public long getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(long id) {

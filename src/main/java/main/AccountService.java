@@ -77,7 +77,7 @@ public class AccountService {
         return null;
     }
 
-    public boolean changeUserInfo(long id, UserProfile user){
+    public boolean editUser(long id, UserProfile user){
         for(Map.Entry<String, UserProfile> userTemp : users.entrySet()){
             if(userTemp.getValue().getId() == id){
                 user.setId(users.get(userTemp.getKey()).getId());
@@ -86,5 +86,13 @@ public class AccountService {
             }
         }
         return false;
+    }
+
+    public void deleteUser(long id) {
+        for (Map.Entry<String, UserProfile> userTemp : users.entrySet()) {
+            if (userTemp.getValue().getId() == id) {
+                users.remove(userTemp.getKey());
+            }
+        }
     }
 }

@@ -2,7 +2,7 @@ from urllib2 import Request, urlopen
 
 values = """
   {
-    "login": "test72",
+    "login": "tes332",
     "password": "test"
   }
 """
