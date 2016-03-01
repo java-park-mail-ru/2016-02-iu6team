@@ -40,6 +40,15 @@ public class AccountService {
         return users.get(userName);
     }
 
+    public UserProfile getUserById(long id) {
+        for(Map.Entry<String, UserProfile> userTemp : users.entrySet()){
+            if(userTemp.getValue().getId() == id){
+                return userTemp.getValue();
+            }
+        }
+        return null;
+    }
+
     public void addSession(String sessionId, UserProfile user) {
         sessions.put(sessionId, user);
     }

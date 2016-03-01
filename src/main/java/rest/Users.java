@@ -30,10 +30,10 @@ public class Users {
     }
 
     @GET
-    @Path("{name}")
+    @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getUserByName(@PathParam("name") String name) {
-        final UserProfile user = accountService.getUser(name);
+    public Response getUserById(@PathParam("id") long id) {
+        final UserProfile user = accountService.getUserById(id);
         if(user == null){
             return Response.status(Response.Status.FORBIDDEN).build();
         }else {
