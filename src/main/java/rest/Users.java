@@ -12,7 +12,7 @@ import javax.ws.rs.core.Response;
 import java.util.Collection;
 
 /**
- * Created by e.shubin on 25.02.2016.
+ * @author iu6team
  */
 @Singleton
 @Path("/user")

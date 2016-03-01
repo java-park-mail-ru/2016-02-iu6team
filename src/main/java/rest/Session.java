@@ -8,10 +8,10 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.Collection;
+
 
 /**
- * Created by e.shubin on 25.02.2016.
+ * @author iu6team
  */
 
 @Singleton

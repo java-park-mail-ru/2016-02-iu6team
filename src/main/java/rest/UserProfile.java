@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * @author esin88
+ * @author iu6team
  */
 public class UserProfile {
     private static final AtomicLong ID_GENERATOR = new AtomicLong(0);
@@ -13,23 +13,28 @@ public class UserProfile {
     private String login;
     @NotNull
     private String password;
+    @NotNull
+    private String email;
 
     public UserProfile() {
-        this.id = -1;
+        this.id = ID_GENERATOR.getAndIncrement();
         login = "";
         password = "";
+        email = "";
     }
 
-    public UserProfile(@NotNull String login, @NotNull String password) {
+    public UserProfile(@NotNull String login, @NotNull String password, @NotNull String email) {
         this.id = ID_GENERATOR.getAndIncrement();
         this.login = login;
         this.password = password;
+        this.email = email;
     }
 
     public UserProfile(UserProfile user) {
-        id = ID_GENERATOR.getAndIncrement();
+        this.id = ID_GENERATOR.getAndIncrement();
         login = user.login;
         password = user.password;
+        email = user.email;
     }
 
     public long getId() {
@@ -57,4 +62,9 @@ public class UserProfile {
     public void setPassword(@NotNull String password) {
         this.password = password;
     }
+
+    @NotNull
+    public String getEmail() { return email; }
+
+    public void setEmail(@NotNull String email) { this.email = email; }
 }
