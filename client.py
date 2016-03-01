@@ -2,7 +2,7 @@ from urllib2 import Request, urlopen
 
 values = """
   {
-    "login": "test",
+    "login": "test72",
     "password": "test"
   }
 """
@@ -17,7 +17,7 @@ print response_body
 
 values = """
   {
-    "login": "dima",
+    "login": "dima2",
     "password": "111"
   }
 """

@@ -56,10 +56,11 @@ public class Users {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response loginUser(UserProfile user, @Context HttpHeaders headers){
-        if(accountService.checkExists(user.getLogin())){
-            return Response.status(Response.Status.BAD_REQUEST).build();
+        long temp = accountService.checkExists(user);
+        if(temp != -1){
+            return Response.status(Response.Status.OK).entity(user.getIdByJson(temp)).build();
         } else {
-            return Response.status(Response.Status.OK).entity(user.getIdByJson()).build();
+            return Response.status(Response.Status.BAD_REQUEST).build();
         }
     }
 }

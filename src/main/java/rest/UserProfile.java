@@ -9,7 +9,6 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public class UserProfile {
     private static final AtomicLong ID_GENERATOR = new AtomicLong(0);
-    @NotNull
     private long id;
     @NotNull
     private String login;
@@ -17,7 +16,7 @@ public class UserProfile {
     private String password;
 
     public UserProfile() {
-        id = ID_GENERATOR.getAndIncrement();
+        id = -1;
         login = "";
         password = "";
     }
@@ -28,6 +27,12 @@ public class UserProfile {
         this.password = password;
     }
 
+    public UserProfile(UserProfile user) {
+        id = ID_GENERATOR.getAndIncrement();
+        login = user.login;
+        password = user.password;
+    }
+
     public long getId() {
         return id;
     }
@@ -36,7 +41,7 @@ public class UserProfile {
         this.id = id;
     }
 
-    public String getIdByJson() {
+    public String getIdByJson(long id) {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("id", id);
         return jsonObject.toString();

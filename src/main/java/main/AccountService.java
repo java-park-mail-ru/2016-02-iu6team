@@ -25,12 +25,15 @@ public class AccountService {
     public boolean addUser(String userName, UserProfile userProfile) {
         if (users.containsKey(userName))
             return false;
-        users.put(userName, userProfile);
+        users.put(userName, new UserProfile(userProfile));
         return true;
     }
 
-    public boolean checkExists(String userName) {
-        return users.containsKey(userName);
+    public long checkExists(UserProfile user) {
+        if(users.containsKey(user.getLogin())){
+            return users.get(user.getLogin()).getId();
+        }
+        return -1;
     }
 
     public UserProfile getUser(String userName) {
