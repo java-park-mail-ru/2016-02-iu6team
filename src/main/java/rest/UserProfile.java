@@ -17,7 +17,7 @@ public class UserProfile {
     private String email;
 
     public UserProfile() {
-        this.id = ID_GENERATOR.getAndIncrement();
+        id = ID_GENERATOR.getAndIncrement();
         login = "";
         password = "";
         email = "";
@@ -31,7 +31,7 @@ public class UserProfile {
     }
 
     public UserProfile(UserProfile user) {
-        this.id = ID_GENERATOR.getAndIncrement();
+        id = ID_GENERATOR.getAndIncrement();
         login = user.login;
         password = user.password;
         email = user.email;
