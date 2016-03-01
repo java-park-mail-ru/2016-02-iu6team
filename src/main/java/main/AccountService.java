@@ -1,5 +1,6 @@
 package main;
 
+import org.json.JSONObject;
 import rest.UserProfile;
 
 import java.util.Collection;
@@ -45,5 +46,25 @@ public class AccountService {
 
     public boolean checkAuth(String sessionId) {
         return sessions.containsKey(sessionId);
+    }
+
+    public UserProfile giveProfileFromSessionId(String sessionId){
+        return sessions.get(sessionId);
+    }
+
+    public String getIdByJson(long id) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("id", id);
+        return jsonObject.toString();
+    }
+
+    public boolean deleteSession(String sessionId){
+        if(checkAuth(sessionId)){
+            sessions.remove(sessionId);
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 }

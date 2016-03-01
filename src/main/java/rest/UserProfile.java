@@ -1,7 +1,6 @@
 package rest;
 
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONObject;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -39,12 +38,6 @@ public class UserProfile {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public String getIdByJson(long id) {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("id", id);
-        return jsonObject.toString();
     }
 
     @NotNull

@@ -28,8 +28,8 @@ public class Session {
     public Response checkAuth(@Context HttpServletRequest request) {
         final String sessionId = request.getSession().getId();
         if (accountService.checkAuth(sessionId)){
-          //  long temp = accountService.checkExists(user);
-            return Response.status(Response.Status.OK).build();
+            long temp = accountService.checkExists(accountService.giveProfileFromSessionId(sessionId));
+            return Response.status(Response.Status.OK).entity(accountService.getIdByJson(temp)).build();
         } else {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
@@ -44,9 +44,17 @@ public class Session {
         if(temp != -1){
             final String sessionId = request.getSession().getId();
             accountService.addSession(sessionId, user);
-            return Response.status(Response.Status.OK).entity(user.getIdByJson(temp)).build();
+            return Response.status(Response.Status.OK).entity(accountService.getIdByJson(temp)).build();
         } else {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
+    }
+
+    @DELETE
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response logOut(@Context HttpServletRequest request){
+        final String sessionId = request.getSession().getId();
+        accountService.deleteSession(sessionId);
+        return Response.status(Response.Status.OK).build();
     }
 }
