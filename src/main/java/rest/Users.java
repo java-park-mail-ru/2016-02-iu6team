@@ -65,7 +65,8 @@ public class Users {
     @Produces(MediaType.APPLICATION_JSON)
     public Response editUser(@PathParam("id") long id, UserProfile user, @Context HttpServletRequest request) {
         final String sessionId = request.getSession().getId();
-        if ((accountService.checkAuth(sessionId))&&(user.getLogin().equals(accountService.getUserById(id).getLogin()))) {
+        UserProfile userTemp = accountService.giveProfileFromSessionId(sessionId);
+        if ((accountService.checkAuth(sessionId))&&userTemp.getLogin().equals(accountService.getUserById(id).getLogin())){
             accountService.editUser(id, user);
             return Response.status(Response.Status.OK).entity(accountService.getIdByJson(id)).build();
         } else {
