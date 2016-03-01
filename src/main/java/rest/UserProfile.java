@@ -17,7 +17,7 @@ public class UserProfile {
     private String email;
 
     public UserProfile() {
-        id = ID_GENERATOR.getAndIncrement();
+        id = -1;
         login = "";
         password = "";
         email = "";

@@ -23,7 +23,7 @@ public class AccountService {
     public boolean addUser(String userName, UserProfile userProfile) {
         if (users.containsKey(userName))
             return false;
-        users.put(userName, userProfile);
+        users.put(userName, new UserProfile(userProfile));
         return true;
     }
 
@@ -76,11 +76,12 @@ public class AccountService {
         return null;
     }
 
-    public boolean editUser(long id, UserProfile user){
+    public boolean editUser(long id, UserProfile user, String sessionId){
         for(Map.Entry<String, UserProfile> userTemp : users.entrySet()){
             if(userTemp.getValue().getId() == id){
                 user.setId(users.get(userTemp.getKey()).getId());
                 users.replace(userTemp.getKey(), user);
+                sessions.replace(sessionId, user);
                 return true;
             }
         }

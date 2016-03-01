@@ -53,9 +53,9 @@ public class Users {
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createUser(UserProfile user, @Context HttpHeaders headers) {
+    public Response createUser(UserProfile user) {
         if (accountService.addUser(user.getLogin(), user)) {
-            return Response.status(Response.Status.OK).entity(accountService.toJson(user)).build();
+            return Response.status(Response.Status.OK).entity(accountService.toJson(accountService.getUser(user.getLogin()))).build();
         } else {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
@@ -69,7 +69,7 @@ public class Users {
         final String sessionId = request.getSession().getId();
         UserProfile userTemp = accountService.giveProfileFromSessionId(sessionId);
         if ((accountService.checkAuth(sessionId))&&userTemp.getLogin().equals(accountService.getUserById(id).getLogin())){
-            accountService.editUser(id, user);
+            accountService.editUser(id, user, sessionId);
             return Response.status(Response.Status.OK).entity(accountService.getIdByJson(id)).build();
         } else {
             return Response.status(Response.Status.FORBIDDEN).entity("wrong user").build();
