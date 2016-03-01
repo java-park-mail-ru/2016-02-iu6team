@@ -94,4 +94,12 @@ public class AccountService {
             }
         }
     }
+
+    public String toJson(UserProfile user) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("id", user.getId());
+        jsonObject.put("login", user.getLogin());
+        jsonObject.put("email", user.getEmail());
+        return jsonObject.toString();
+    }
 }

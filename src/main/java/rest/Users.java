@@ -43,7 +43,7 @@ public class Users {
             if (userTemp == null) {
                 return Response.status(Response.Status.FORBIDDEN).build();
             } else {
-                return Response.status(Response.Status.OK).entity(userTemp).build();
+                return Response.status(Response.Status.OK).entity(accountService.toJson(userTemp)).build();
             }
         } else {
             return Response.status(Response.Status.UNAUTHORIZED).build();
@@ -55,7 +55,7 @@ public class Users {
     @Produces(MediaType.APPLICATION_JSON)
     public Response createUser(UserProfile user, @Context HttpHeaders headers) {
         if (accountService.addUser(user.getLogin(), user)) {
-            return Response.status(Response.Status.OK).entity(user.getLogin()).build();
+            return Response.status(Response.Status.OK).entity(accountService.toJson(user)).build();
         } else {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
