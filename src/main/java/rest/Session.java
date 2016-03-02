@@ -42,11 +42,10 @@ public class Session {
     @Produces(MediaType.APPLICATION_JSON)
     public Response loginUser(UserProfile user, @Context HttpHeaders headers, @Context HttpServletRequest request) {
         if (accountService.isExists(user)) {
-            long temp = accountService.getUser(user.getLogin()).getId();
-            if ((temp != -1) && (user.getPassword().equals(accountService.getUser(user.getLogin()).getPassword()))) {
+            if (user.getPassword().equals(accountService.getUser(user.getLogin()).getPassword())) {
                 final String sessionId = request.getSession().getId();
                 accountService.addSession(sessionId, user);
-                return Response.status(Response.Status.OK).entity(accountService.getIdByJson(temp)).build();
+                return Response.status(Response.Status.OK).entity(accountService.getIdByJson(accountService.getUser(user.getLogin()).getId())).build();
             }
         }
         return Response.status(Response.Status.BAD_REQUEST).build();

@@ -34,8 +34,7 @@ public class Users {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUserById(@PathParam("id") long id, @Context HttpServletRequest request) {
         final String sessionId = request.getSession().getId();
-        UserProfile user = accountService.giveProfileFromSessionId(sessionId);
-        if ((accountService.checkAuth(sessionId))&&(user.getLogin().equals(accountService.getUserById(id).getLogin()))) {
+        if (accountService.checkAuth(sessionId)) {
             final UserProfile userTemp = accountService.getUserById(id);
             if (userTemp == null) {
                 return Response.status(Response.Status.FORBIDDEN).build();
@@ -65,7 +64,7 @@ public class Users {
     public Response editUser(@PathParam("id") long id, UserProfile user, @Context HttpServletRequest request) {
         final String sessionId = request.getSession().getId();
         UserProfile userTemp = accountService.giveProfileFromSessionId(sessionId);
-        if ((accountService.checkAuth(sessionId))&&userTemp.getLogin().equals(accountService.getUserById(id).getLogin())){
+        if ((user != null)&&(userTemp.getId() == accountService.getUserById(id).getId())){
             accountService.editUser(id, user, sessionId);
             return Response.status(Response.Status.OK).entity(accountService.getIdByJson(id)).build();
         } else {

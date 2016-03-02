@@ -39,7 +39,7 @@ public class AccountService {
     }
 
     public void addSession(String sessionId, UserProfile user) {
-        sessions.put(sessionId, user);
+        sessions.put(sessionId, users.get(user.getLogin()));
     }
 
     public boolean checkAuth(String sessionId) {
