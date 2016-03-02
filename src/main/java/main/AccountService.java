@@ -1,6 +1,6 @@
 package main;
 
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 import rest.UserProfile;
 
@@ -15,6 +15,7 @@ import java.util.Map;
 public class AccountService {
     private Map<String, UserProfile> users = new ConcurrentHashMap<>();
     private Map<String, UserProfile> sessions = new ConcurrentHashMap<>();
+    private Map<Long, UserProfile> usersId = new ConcurrentHashMap<>();
 
     public Collection<UserProfile> getAllUsers() {
         return users.values();
@@ -24,15 +25,14 @@ public class AccountService {
         if (users.containsKey(userName))
             return false;
         users.put(userName, new UserProfile(userProfile));
+        usersId.put(users.get(userProfile.getLogin()).getId(), users.get(userProfile.getLogin()));
         return true;
     }
 
-    public long checkExists(UserProfile user) {
-        if(users.containsKey(user.getLogin())){
-                    return users.get(user.getLogin()).getId();
-        }
-        return -1;
+    public boolean isExists(@NotNull UserProfile user) {
+        return users.containsKey(user.getLogin());
     }
+
 
     public UserProfile getUser(String userName) {
         return users.get(userName);
@@ -66,34 +66,21 @@ public class AccountService {
         }
     }
 
-    @Nullable
     public UserProfile getUserById(long id) {
-        for(Map.Entry<String, UserProfile> userTemp : users.entrySet()){
-            if(userTemp.getValue().getId() == id){
-                return userTemp.getValue();
-            }
-        }
-        return null;
+        return usersId.get(id);
     }
 
-    public boolean editUser(long id, UserProfile user, String sessionId){
-        for(Map.Entry<String, UserProfile> userTemp : users.entrySet()){
-            if(userTemp.getValue().getId() == id){
-                user.setId(users.get(userTemp.getKey()).getId());
-                users.replace(userTemp.getKey(), user);
-                sessions.replace(sessionId, user);
-                return true;
-            }
-        }
-        return false;
+    public void editUser(long id, UserProfile user, String sessionId){
+        user.setId(usersId.get(id).getId());
+        users.put(user.getLogin(), user);
+        users.remove(usersId.get(id).getLogin());
+        sessions.replace(sessionId, user);
+        usersId.replace(id, user);
     }
 
     public void deleteUser(long id) {
-        for (Map.Entry<String, UserProfile> userTemp : users.entrySet()) {
-            if (userTemp.getValue().getId() == id) {
-                users.remove(userTemp.getKey());
-            }
-        }
+        users.remove(usersId.get(id).getLogin());
+        usersId.remove(id);
     }
 
     public String toJson(UserProfile user) {
@@ -101,6 +88,12 @@ public class AccountService {
         jsonObject.put("id", user.getId());
         jsonObject.put("login", user.getLogin());
         jsonObject.put("email", user.getEmail());
+        return jsonObject.toString();
+    }
+
+    public String toJsonError(String error) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("error:", error);
         return jsonObject.toString();
     }
 }

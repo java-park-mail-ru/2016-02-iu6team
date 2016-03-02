@@ -2,13 +2,10 @@ package rest;
 
 import main.AccountService;
 
-import org.jetbrains.annotations.Nullable;
-
 import javax.inject.Singleton;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Collection;
@@ -72,7 +69,7 @@ public class Users {
             accountService.editUser(id, user, sessionId);
             return Response.status(Response.Status.OK).entity(accountService.getIdByJson(id)).build();
         } else {
-            return Response.status(Response.Status.FORBIDDEN).entity("wrong user").build();
+            return Response.status(Response.Status.FORBIDDEN).entity(accountService.toJsonError("wrong user")).build();
         }
     }
 
@@ -87,7 +84,7 @@ public class Users {
             accountService.deleteSession(sessionId);
             return Response.status(Response.Status.OK).build();
         } else {
-            return Response.status(Response.Status.FORBIDDEN).entity("wrong user").build();
+            return Response.status(Response.Status.FORBIDDEN).entity(accountService.toJsonError("wrong user")).build();
         }
     }
 }
