@@ -78,7 +78,7 @@ public class Users {
     public Response deleteUser(@PathParam("id") long id, @Context HttpServletRequest request) {
         final String sessionId = request.getSession().getId();
         UserProfile user = accountService.giveProfileFromSessionId(sessionId);
-        if ((accountService.checkAuth(sessionId))&&(user.getLogin().equals(accountService.getUserById(id).getLogin()))) {
+        if ((accountService.checkAuth(sessionId))&&(user.getId() == accountService.getUserById(id).getId())) {
             accountService.deleteUser(id);
             accountService.deleteSession(sessionId);
             return Response.status(Response.Status.OK).build();

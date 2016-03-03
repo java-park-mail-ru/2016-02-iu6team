@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d1a35de6-bc37-45d6-ad1b-575ce4a54d72" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/main/AccountService.java" afterPath="$PROJECT_DIR$/src/main/java/main/AccountService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/rest/Session.java" afterPath="$PROJECT_DIR$/src/main/java/rest/Session.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/rest/Users.java" afterPath="$PROJECT_DIR$/src/main/java/rest/Users.java" />
     </list>
     <ignored path="L1.3.iws" />
@@ -78,8 +76,8 @@
       <file leaf-file-name="Users.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/rest/Users.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.031311154">
-              <caret line="35" column="62" selection-start-line="35" selection-start-column="62" selection-end-line="35" selection-end-column="62" />
+            <state vertical-scroll-proportion="0.8238748">
+              <caret line="87" column="5" selection-start-line="87" selection-start-column="0" selection-end-line="88" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#441#442#0" expanded="true" />
@@ -736,8 +734,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/rest/Users.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.031311154">
-          <caret line="35" column="62" selection-start-line="35" selection-start-column="62" selection-end-line="35" selection-end-column="62" />
+        <state vertical-scroll-proportion="0.8238748">
+          <caret line="87" column="5" selection-start-line="87" selection-start-column="0" selection-end-line="88" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#441#442#0" expanded="true" />
