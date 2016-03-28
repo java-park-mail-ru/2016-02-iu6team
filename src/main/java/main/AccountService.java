@@ -1,99 +1,40 @@
 package main;
 
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONObject;
 import rest.UserProfile;
 
 import java.util.Collection;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.Map;
-
 
 /**
- * @author iu6team
+ * Created by qwerty on 28.03.16.
  */
-public class AccountService {
-    private Map<String, UserProfile> users = new ConcurrentHashMap<>();
-    private Map<String, UserProfile> sessions = new ConcurrentHashMap<>();
-    private Map<Long, UserProfile> usersId = new ConcurrentHashMap<>();
+public interface AccountService {
 
-    public Collection<UserProfile> getAllUsers() {
-        return users.values();
-    }
+    Collection<UserProfile> getAllUsers();
 
-    public boolean addUser(String userName, UserProfile userProfile) {
-        if (users.containsKey(userName))
-            return false;
-        users.put(userName, new UserProfile(userProfile));
-        usersId.put(users.get(userProfile.getLogin()).getId(), users.get(userProfile.getLogin()));
-        return true;
-    }
+    boolean addUser(String userName, UserProfile userProfile);
 
-    public boolean isExists(@NotNull UserProfile user) {
-        return users.containsKey(user.getLogin());
-    }
+    UserProfile getUser(String userName);
 
+    boolean isExists(@NotNull UserProfile user);
 
-    public UserProfile getUser(String userName) {
-        return users.get(userName);
-    }
+    void addSession(String sessionId, UserProfile user);
 
-    public void addSession(String sessionId, UserProfile user) {
-        sessions.put(sessionId, users.get(user.getLogin()));
-    }
+    boolean checkAuth(String sessionId);
 
-    public boolean checkAuth(String sessionId) {
-        return sessions.containsKey(sessionId);
-    }
+    UserProfile giveProfileFromSessionId(String sessionId);
 
-    public UserProfile giveProfileFromSessionId(String sessionId){
-        return sessions.get(sessionId);
-    }
+    String getIdByJson(long id);
 
-    public String getIdByJson(long id) {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("id", id);
-        return jsonObject.toString();
-    }
+    boolean deleteSession(String sessionId);
 
-    public boolean deleteSession(String sessionId){
-        if(checkAuth(sessionId)){
-            sessions.remove(sessionId);
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
+    UserProfile getUserById(long id);
 
-    public UserProfile getUserById(long id) {
-        return usersId.get(id);
-    }
+    void editUser(long id, UserProfile user, String sessionId);
 
-    public void editUser(long id, UserProfile user, String sessionId){
-        user.setId(usersId.get(id).getId());
-        users.put(user.getLogin(), user);
-        users.remove(usersId.get(id).getLogin());
-        sessions.replace(sessionId, user);
-        usersId.replace(id, user);
-    }
+    void deleteUser(long id);
 
-    public void deleteUser(long id) {
-        users.remove(usersId.get(id).getLogin());
-        usersId.remove(id);
-    }
+    String toJson(UserProfile user);
 
-    public String toJson(UserProfile user) {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("id", user.getId());
-        jsonObject.put("login", user.getLogin());
-        jsonObject.put("email", user.getEmail());
-        return jsonObject.toString();
-    }
-
-    public String toJsonError(String error) {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("error:", error);
-        return jsonObject.toString();
-    }
+    String toJsonError(String error);
 }

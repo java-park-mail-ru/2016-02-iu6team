@@ -1,7 +1,9 @@
 package rest;
 
 import main.AccountService;
+import main.AccountServiceImpl;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
@@ -16,15 +18,19 @@ import java.util.Collection;
 @Singleton
 @Path("/user")
 public class Users {
-    private AccountService accountService;
+    @Inject
+    private main.Context context;
+   // final AccountService accountService = context.get(AccountService.class);
+    //private AccountServiceImpl accountService;
 
-    public Users(AccountService accountService) {
-        this.accountService = accountService;
-    }
+   // public Users(AccountServiceImpl accountService) {
+   //     this.accountService = accountService;
+   // }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllUsers() {
+        final AccountService accountService = context.get(AccountService.class);
         final Collection<UserProfile> allUsers = accountService.getAllUsers();
         return Response.status(Response.Status.OK).entity(allUsers.toArray(new UserProfile[allUsers.size()])).build();
     }
@@ -33,6 +39,7 @@ public class Users {
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUserById(@PathParam("id") long id, @Context HttpServletRequest request) {
+        final AccountService accountService = context.get(AccountService.class);
         final String sessionId = request.getSession().getId();
         if (accountService.checkAuth(sessionId)) {
             final UserProfile userTemp = accountService.getUserById(id);
@@ -50,6 +57,7 @@ public class Users {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createUser(UserProfile user) {
+        final AccountService accountService = context.get(AccountService.class);
         if (accountService.addUser(user.getLogin(), user)) {
             return Response.status(Response.Status.OK).entity(accountService.toJson(accountService.getUser(user.getLogin()))).build();
         } else {
@@ -62,6 +70,7 @@ public class Users {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response editUser(@PathParam("id") long id, UserProfile user, @Context HttpServletRequest request) {
+        final AccountService accountService = context.get(AccountService.class);
         final String sessionId = request.getSession().getId();
         UserProfile userTemp = accountService.giveProfileFromSessionId(sessionId);
         if ((user != null)&&(userTemp.getId() == accountService.getUserById(id).getId())){
@@ -76,6 +85,7 @@ public class Users {
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteUser(@PathParam("id") long id, @Context HttpServletRequest request) {
+        final AccountService accountService = context.get(AccountService.class);
         final String sessionId = request.getSession().getId();
         UserProfile user = accountService.giveProfileFromSessionId(sessionId);
         if ((accountService.checkAuth(sessionId))&&(user.getId() == accountService.getUserById(id).getId())) {
