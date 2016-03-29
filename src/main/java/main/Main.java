@@ -1,6 +1,9 @@
 package main;
 
+import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.HandlerList;
+import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
@@ -40,8 +43,16 @@ public class Main {
         });
 
         final ServletHolder servletHolder = new ServletHolder(new ServletContainer(config));
+        //servletHolder.setInitParameter("javax.ws.rs.Application");
 
-        //servletHolder.setInitParameter("javax.ws.rs.Application","main.RestApplication");
+        ResourceHandler resourceHandler = new ResourceHandler();
+        resourceHandler.setDirectoriesListed(true);
+        resourceHandler.setWelcomeFiles(new String[]{ "index.html" });
+        resourceHandler.setResourceBase("public_html");
+
+        HandlerList handlers = new HandlerList();
+        handlers.setHandlers(new Handler[] { resourceHandler, contextHandler });
+        server.setHandler(handlers);
 
         contextHandler.addServlet(servletHolder, "/*");
         server.start();
