@@ -1,5 +1,6 @@
 package rest;
 
+import db.UserDataSet;
 import main.AccountService;
 import main.AccountServiceImpl;
 
@@ -20,21 +21,15 @@ import java.util.Collection;
 public class Users {
     @Inject
     private main.Context context;
-   // final AccountService accountService = context.get(AccountService.class);
-    //private AccountServiceImpl accountService;
-
-   // public Users(AccountServiceImpl accountService) {
-   //     this.accountService = accountService;
-   // }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllUsers() {
         final AccountService accountService = context.get(AccountService.class);
-        final Collection<UserProfile> allUsers = accountService.getAllUsers();
-        return Response.status(Response.Status.OK).entity(allUsers.toArray(new UserProfile[allUsers.size()])).build();
+        final Collection<UserDataSet> allUsers = accountService.getAllUsers();
+        return Response.status(Response.Status.OK).entity(allUsers.toArray(new UserDataSet[allUsers.size()])).build();
     }
-
+/*
     @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -52,19 +47,19 @@ public class Users {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
     }
-
+*/
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createUser(UserProfile user) {
+    public Response createUser(UserDataSet user) {
         final AccountService accountService = context.get(AccountService.class);
-        if (accountService.addUser(user.getLogin(), user)) {
-            return Response.status(Response.Status.OK).entity(accountService.toJson(accountService.getUser(user.getLogin()))).build();
+        if (accountService.addUser(user)) {
+            return Response.status(Response.Status.OK).entity(accountService.getIdByJson(user.getId())).build();
         } else {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
     }
-
+/*
     @POST
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -95,5 +90,5 @@ public class Users {
         } else {
             return Response.status(Response.Status.FORBIDDEN).entity(accountService.toJsonError("wrong user")).build();
         }
-    }
+    }*/
 }

@@ -27,7 +27,7 @@ public class Session {
     //public Session(AccountServiceImpl accountService) {
     //    this.accountService = accountService;
     //}
-
+/*
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response checkAuth(@Context HttpServletRequest request) {
@@ -65,5 +65,5 @@ public class Session {
         final String sessionId = request.getSession().getId();
         accountService.deleteSession(sessionId);
         return Response.status(Response.Status.OK).build();
-    }
+    }*/
 }

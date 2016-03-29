@@ -1,19 +1,20 @@
 package main;
 
 import org.jetbrains.annotations.NotNull;
-import rest.UserProfile;
+import db.UserDataSet;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by qwerty on 28.03.16.
  */
 public interface AccountService {
 
-    Collection<UserProfile> getAllUsers();
+    List<UserDataSet> getAllUsers();
 
-    boolean addUser(String userName, UserProfile userProfile);
-
+    boolean addUser(UserDataSet userProfile);
+/*
     UserProfile getUser(String userName);
 
     boolean isExists(@NotNull UserProfile user);
@@ -24,7 +25,7 @@ public interface AccountService {
 
     UserProfile giveProfileFromSessionId(String sessionId);
 
-    String getIdByJson(long id);
+
 
     boolean deleteSession(String sessionId);
 
@@ -33,8 +34,9 @@ public interface AccountService {
     void editUser(long id, UserProfile user, String sessionId);
 
     void deleteUser(long id);
+*/
 
-    String toJson(UserProfile user);
-
+    String getIdByJson(long id);
+    String toJson(UserDataSet user);
     String toJsonError(String error);
 }

@@ -1,11 +1,12 @@
 package main;
 
 import db.UserDataSet;
+import db.UserDataSetDAO;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
-import rest.UserProfile;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.Map;
 import org.hibernate.Session;
@@ -19,15 +20,12 @@ import org.hibernate.service.ServiceRegistry;
  * @author iu6team
  */
 public class AccountServiceImpl implements AccountService {
-    private Map<String, UserProfile> users = new ConcurrentHashMap<>();
-    private Map<String, UserProfile> sessions = new ConcurrentHashMap<>();
-    private Map<Long, UserProfile> usersId = new ConcurrentHashMap<>();
+    private Map<String, UserDataSet> sessions = new ConcurrentHashMap<>();
     private SessionFactory sessionFactory;
 
     public AccountServiceImpl() {
         Configuration configuration = new Configuration();
         configuration.addAnnotatedClass(UserDataSet.class);
-
         configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
         configuration.setProperty("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");
         configuration.setProperty("hibernate.connection.url", "jdbc:mysql://localhost:3306/javaDB");
@@ -40,10 +38,25 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Collection<UserProfile> getAllUsers() {
-        return users.values();
+    public List<UserDataSet> getAllUsers() {
+        Session session = sessionFactory.openSession();
+        UserDataSetDAO dao = new UserDataSetDAO(session);
+        return dao.getAllUsers();
     }
 
+    @Override
+    public boolean addUser(UserDataSet userProfile) {
+        try ( Session session = sessionFactory.openSession() ) {
+            UserDataSetDAO dao = new UserDataSetDAO(session);
+            if (dao.getUserByLogin(userProfile.getLogin()) != null || dao.getUserByEmail(userProfile.getEmail()) != null) {
+                return false;
+            } else {
+                dao.addUser(userProfile);
+                return true;
+            }
+        }
+    }
+/*
     @Override
     public boolean addUser(String userName, UserProfile userProfile) {
         if (users.containsKey(userName))
@@ -75,12 +88,7 @@ public class AccountServiceImpl implements AccountService {
     public UserProfile giveProfileFromSessionId(String sessionId){
         return sessions.get(sessionId);
     }
-    @Override
-    public String getIdByJson(long id) {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("id", id);
-        return jsonObject.toString();
-    }
+
     @Override
     public boolean deleteSession(String sessionId){
         if(checkAuth(sessionId)){
@@ -108,8 +116,16 @@ public class AccountServiceImpl implements AccountService {
         users.remove(usersId.get(id).getLogin());
         usersId.remove(id);
     }
+    */
     @Override
-    public String toJson(UserProfile user) {
+    public String getIdByJson(long id) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("id", id);
+        return jsonObject.toString();
+    }
+
+    @Override
+    public String toJson(UserDataSet user) {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("id", user.getId());
         jsonObject.put("login", user.getLogin());
@@ -122,6 +138,7 @@ public class AccountServiceImpl implements AccountService {
         jsonObject.put("error:", error);
         return jsonObject.toString();
     }
+
 
     private static SessionFactory createSessionFactory(Configuration configuration) {
         StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();

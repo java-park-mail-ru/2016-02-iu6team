@@ -2,15 +2,16 @@ package db;
 import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * author iu6team
  */
-
-@SuppressWarnings({"SameParameterValue", "DefaultFileTemplate"})
 @Entity
-@Table(name = "User")
-public class UserDataSet {
+@Table(name = "Users")
+public class UserDataSet implements Serializable {
+    private static final long serialVersionUID = -8706689714326132798L;
+
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,17 +57,11 @@ public class UserDataSet {
     public void setEmail(@NotNull String email) { this.email = email; }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj == null) return false;
-        if (this.getClass() != obj.getClass()) return false;
-        UserDataSet other = (UserDataSet) obj;
-        return this.id == other.getId() && this.login.equals(other.getLogin()) && this.email.equals(other.getEmail())
-                && this.password.equals(other.getPassword());
-    }
-
-    @Override
-    public int hashCode()
-    {
-        return 76+133*login.hashCode();
+    public String toString() {
+        return "UserDataSet{" +
+                "id=" + id +
+                ", name='" + login + '\'' +
+                "email=" + email + '\'' +
+                '}';
     }
 }
