@@ -1,5 +1,6 @@
 package main;
 
+import db.UserDataSet;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 import rest.UserProfile;
@@ -7,7 +8,12 @@ import rest.UserProfile;
 import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.Map;
-
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.service.ServiceRegistry;
 
 /**
  * @author iu6team
@@ -16,6 +22,22 @@ public class AccountServiceImpl implements AccountService {
     private Map<String, UserProfile> users = new ConcurrentHashMap<>();
     private Map<String, UserProfile> sessions = new ConcurrentHashMap<>();
     private Map<Long, UserProfile> usersId = new ConcurrentHashMap<>();
+    private SessionFactory sessionFactory;
+
+    public AccountServiceImpl() {
+        Configuration configuration = new Configuration();
+        configuration.addAnnotatedClass(UserDataSet.class);
+
+        configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
+        configuration.setProperty("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");
+        configuration.setProperty("hibernate.connection.url", "jdbc:mysql://localhost:3306/javaDB");
+        configuration.setProperty("hibernate.connection.username", "root");
+        configuration.setProperty("hibernate.connection.password", "1");
+        configuration.setProperty("hibernate.show_sql", "true");
+        configuration.setProperty("hibernate.hbm2ddl.auto", "create");
+
+        sessionFactory = createSessionFactory(configuration);
+    }
 
     @Override
     public Collection<UserProfile> getAllUsers() {
@@ -99,5 +121,12 @@ public class AccountServiceImpl implements AccountService {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("error:", error);
         return jsonObject.toString();
+    }
+
+    private static SessionFactory createSessionFactory(Configuration configuration) {
+        StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
+        builder.applySettings(configuration.getProperties());
+        ServiceRegistry serviceRegistry = builder.build();
+        return configuration.buildSessionFactory(serviceRegistry);
     }
 }
