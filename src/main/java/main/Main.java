@@ -43,7 +43,6 @@ public class Main {
         });
 
         final ServletHolder servletHolder = new ServletHolder(new ServletContainer(config));
-        //servletHolder.setInitParameter("javax.ws.rs.Application");
 
         ResourceHandler resourceHandler = new ResourceHandler();
         resourceHandler.setDirectoriesListed(true);

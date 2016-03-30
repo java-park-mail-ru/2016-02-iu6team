@@ -82,7 +82,7 @@ public class Users {
     public Response deleteUser(@PathParam("id") long id, @Context HttpServletRequest request) {
         final AccountService accountService = context.get(AccountService.class);
         final String sessionId = request.getSession().getId();
-        UserProfile user = accountService.giveProfileFromSessionId(sessionId);
+        UserDataSet user = accountService.getUser(sessionId);
         if ((accountService.checkAuth(sessionId))&&(user.getId() == accountService.getUserById(id).getId())) {
             accountService.deleteUser(id);
             accountService.deleteSession(sessionId);
@@ -90,5 +90,6 @@ public class Users {
         } else {
             return Response.status(Response.Status.FORBIDDEN).entity(accountService.toJsonError("wrong user")).build();
         }
-    }*/
+    }
+    */
 }
