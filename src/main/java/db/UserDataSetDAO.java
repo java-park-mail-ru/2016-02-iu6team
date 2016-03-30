@@ -34,14 +34,14 @@ public class UserDataSetDAO {
         trx.commit();
     }
 
-    public void updateUser(UserDataSet updatedUser, long userId) {
+    public void editUser(UserDataSet userNew, long userId) {
         Transaction trx = session.beginTransaction();
         UserDataSet user = session.load(UserDataSet.class, userId);
-        if (getUserByLogin(updatedUser.getLogin()) == null)
-            user.setLogin(updatedUser.getLogin());
-        if (getUserByEmail(updatedUser.getEmail()) == null)
-            user.setEmail(updatedUser.getEmail());
-        user.setPassword(updatedUser.getPassword());
+        if (getUserByLogin(userNew.getLogin()) == null)
+            user.setLogin(userNew.getLogin());
+        if (getUserByEmail(userNew.getEmail()) == null)
+            user.setEmail(userNew.getEmail());
+        user.setPassword(userNew.getPassword());
         session.save(user);
         trx.commit();
     }

@@ -29,7 +29,7 @@ public class Users {
         final Collection<UserDataSet> allUsers = accountService.getAllUsers();
         return Response.status(Response.Status.OK).entity(allUsers.toArray(new UserDataSet[allUsers.size()])).build();
     }
-/*
+
     @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -37,7 +37,7 @@ public class Users {
         final AccountService accountService = context.get(AccountService.class);
         final String sessionId = request.getSession().getId();
         if (accountService.checkAuth(sessionId)) {
-            final UserProfile userTemp = accountService.getUserById(id);
+            final UserDataSet userTemp = accountService.getUser(id);
             if (userTemp == null) {
                 return Response.status(Response.Status.FORBIDDEN).build();
             } else {
@@ -47,7 +47,7 @@ public class Users {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
     }
-*/
+
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -59,16 +59,16 @@ public class Users {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
     }
-/*
+
     @POST
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response editUser(@PathParam("id") long id, UserProfile user, @Context HttpServletRequest request) {
+    public Response editUser(@PathParam("id") long id, UserDataSet user, @Context HttpServletRequest request) {
         final AccountService accountService = context.get(AccountService.class);
         final String sessionId = request.getSession().getId();
-        UserProfile userTemp = accountService.giveProfileFromSessionId(sessionId);
-        if ((user != null)&&(userTemp.getId() == accountService.getUserById(id).getId())){
+        UserDataSet userTemp = accountService.getUserByLogin(accountService.giveProfileFromSessionId(sessionId).getLogin());
+        if ((user != null)&&(userTemp.getId() == accountService.getUser(id).getId())){
             accountService.editUser(id, user, sessionId);
             return Response.status(Response.Status.OK).entity(accountService.getIdByJson(id)).build();
         } else {
@@ -82,8 +82,8 @@ public class Users {
     public Response deleteUser(@PathParam("id") long id, @Context HttpServletRequest request) {
         final AccountService accountService = context.get(AccountService.class);
         final String sessionId = request.getSession().getId();
-        UserDataSet user = accountService.getUser(sessionId);
-        if ((accountService.checkAuth(sessionId))&&(user.getId() == accountService.getUserById(id).getId())) {
+        UserDataSet user = accountService.getUserByLogin(accountService.giveProfileFromSessionId(sessionId).getLogin());
+        if ((accountService.checkAuth(sessionId))&&(user.getId() == accountService.getUser(id).getId())) {
             accountService.deleteUser(id);
             accountService.deleteSession(sessionId);
             return Response.status(Response.Status.OK).build();
@@ -91,5 +91,5 @@ public class Users {
             return Response.status(Response.Status.FORBIDDEN).entity(accountService.toJsonError("wrong user")).build();
         }
     }
-    */
+
 }

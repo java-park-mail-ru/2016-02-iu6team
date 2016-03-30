@@ -33,7 +33,6 @@ public class AccountServiceImpl implements AccountService {
         configuration.setProperty("hibernate.connection.password", "1");
         configuration.setProperty("hibernate.show_sql", "true");
         configuration.setProperty("hibernate.hbm2ddl.auto", "create");
-
         sessionFactory = createSessionFactory(configuration);
     }
 
@@ -69,18 +68,14 @@ public class AccountServiceImpl implements AccountService {
         UserDataSetDAO dao = new UserDataSetDAO(session);
         return dao.getUserByLogin(login);
     }
-/*
-
 
     @Override
-    public void editUser(long id, UserProfile user, String sessionId){
-        user.setId(usersId.get(id).getId());
-        users.put(user.getLogin(), user);
-        users.remove(usersId.get(id).getLogin());
+    public void editUser(long id, UserDataSet user, String sessionId){
+        Session session = sessionFactory.openSession();
+        UserDataSetDAO dao = new UserDataSetDAO(session);
+        dao.editUser(user, id);
         sessions.replace(sessionId, user);
-        usersId.replace(id, user);
     }
-    */
 
     @Override
     public boolean deleteSession(String sessionId){
