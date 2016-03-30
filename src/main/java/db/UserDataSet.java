@@ -26,9 +26,6 @@ public class UserDataSet implements Serializable {
     @Column(name="email")
     private String email;
 
-    public UserDataSet() {
-    }
-
     @NotNull
     public String getLogin() {
         return login;

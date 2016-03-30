@@ -2,7 +2,6 @@ package rest;
 
 import db.UserDataSet;
 import main.AccountService;
-import main.AccountServiceImpl;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

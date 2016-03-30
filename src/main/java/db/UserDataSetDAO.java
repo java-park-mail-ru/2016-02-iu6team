@@ -3,13 +3,10 @@ package db;
 /**
  * Created by iu6team on 30.03.16.
  */
-import db.UserDataSet;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
-
-import java.util.Collection;
 import java.util.List;
 
 public class UserDataSetDAO {

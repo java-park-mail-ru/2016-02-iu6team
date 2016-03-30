@@ -5,13 +5,11 @@ import db.UserDataSetDAO;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.Map;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
@@ -20,8 +18,8 @@ import org.hibernate.service.ServiceRegistry;
  * @author iu6team
  */
 public class AccountServiceImpl implements AccountService {
-    private Map<String, UserDataSet> sessions = new ConcurrentHashMap<>();
-    private SessionFactory sessionFactory;
+    private final Map<String, UserDataSet> sessions = new ConcurrentHashMap<>();
+    private final SessionFactory sessionFactory;
 
     public AccountServiceImpl() {
         Configuration configuration = new Configuration();

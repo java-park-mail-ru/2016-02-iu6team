@@ -2,7 +2,6 @@ package rest;
 
 import db.UserDataSet;
 import main.AccountService;
-import main.AccountServiceImpl;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -68,7 +67,7 @@ public class Users {
         final AccountService accountService = context.get(AccountService.class);
         final String sessionId = request.getSession().getId();
         UserDataSet userTemp = accountService.getUserByLogin(accountService.giveProfileFromSessionId(sessionId).getLogin());
-        if ((user != null)&&(userTemp.getId() == accountService.getUser(id).getId())){
+        if ((user != null) && (userTemp.getId() == accountService.getUser(id).getId())) {
             accountService.editUser(id, user, sessionId);
             return Response.status(Response.Status.OK).entity(accountService.getIdByJson(id)).build();
         } else {
@@ -83,7 +82,7 @@ public class Users {
         final AccountService accountService = context.get(AccountService.class);
         final String sessionId = request.getSession().getId();
         UserDataSet user = accountService.getUserByLogin(accountService.giveProfileFromSessionId(sessionId).getLogin());
-        if ((accountService.checkAuth(sessionId))&&(user.getId() == accountService.getUser(id).getId())) {
+        if ((accountService.checkAuth(sessionId)) && (user.getId() == accountService.getUser(id).getId())) {
             accountService.deleteUser(id);
             accountService.deleteSession(sessionId);
             return Response.status(Response.Status.OK).build();
