@@ -1,6 +1,9 @@
 package rest;
+
+import db.UserDataSet;
 import main.AccountService;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
@@ -17,20 +20,18 @@ import javax.ws.rs.core.Response;
 @Singleton
 @Path("/session")
 public class Session {
-    private AccountService accountService;
-
-    public Session(AccountService accountService) {
-        this.accountService = accountService;
-    }
+    @Inject
+    private main.Context context;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response checkAuth(@Context HttpServletRequest request) {
+        final AccountService accountService = context.get(AccountService.class);
         final String sessionId = request.getSession().getId();
         if (accountService.checkAuth(sessionId)) {
-            UserProfile userTemp = accountService.giveProfileFromSessionId(sessionId);
+            UserDataSet userTemp = accountService.giveProfileFromSessionId(sessionId);
             if (accountService.isExists(userTemp)) {
-                long temp = accountService.getUser(userTemp.getLogin()).getId();
+                long temp = accountService.getUserByLogin(userTemp.getLogin()).getId();
                 return Response.status(Response.Status.OK).entity(accountService.getIdByJson(temp)).build();
             }
         }
@@ -40,12 +41,13 @@ public class Session {
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response loginUser(UserProfile user, @Context HttpHeaders headers, @Context HttpServletRequest request) {
+    public Response loginUser(UserDataSet user, @Context HttpHeaders headers, @Context HttpServletRequest request) {
+        final AccountService accountService = context.get(AccountService.class);
         if (accountService.isExists(user)) {
-            if (user.getPassword().equals(accountService.getUser(user.getLogin()).getPassword())) {
+            if (user.getPassword().equals(accountService.getUserByLogin(user.getLogin()).getPassword())) {
                 final String sessionId = request.getSession().getId();
                 accountService.addSession(sessionId, user);
-                return Response.status(Response.Status.OK).entity(accountService.getIdByJson(accountService.getUser(user.getLogin()).getId())).build();
+                return Response.status(Response.Status.OK).entity(accountService.getIdByJson(accountService.getUserByLogin(user.getLogin()).getId())).build();
             }
         }
         return Response.status(Response.Status.BAD_REQUEST).build();
@@ -54,6 +56,7 @@ public class Session {
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
     public Response logOut(@Context HttpServletRequest request){
+        final AccountService accountService = context.get(AccountService.class);
         final String sessionId = request.getSession().getId();
         accountService.deleteSession(sessionId);
         return Response.status(Response.Status.OK).build();
