@@ -151,10 +151,9 @@ public class AccountServiceImpl implements AccountService {
             ServiceRegistry serviceRegistry = builder.build();
             return configuration.buildSessionFactory(serviceRegistry);
         } catch(HibernateException e) {
-            System.err.println("Can't connect to MySQL");
+            System.err.println("Can't connect to MySQL " + e);
             System.exit(1);
+            throw e;
         }
-        ServiceRegistry serviceRegistry = builder.build();
-        return configuration.buildSessionFactory(serviceRegistry);
     }
 }

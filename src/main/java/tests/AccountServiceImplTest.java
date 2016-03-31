@@ -175,7 +175,13 @@ public class AccountServiceImplTest {
     private static SessionFactory createSessionFactory(Configuration configuration) {
         StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
         builder.applySettings(configuration.getProperties());
-        ServiceRegistry serviceRegistry = builder.build();
-        return configuration.buildSessionFactory(serviceRegistry);
+        try {
+            ServiceRegistry serviceRegistry = builder.build();
+            return configuration.buildSessionFactory(serviceRegistry);
+        } catch(HibernateException e) {
+            System.err.println("Can't connect to MySQL " + e);
+            System.exit(1);
+            throw e;
+        }
     }
 }
