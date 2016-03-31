@@ -2,6 +2,7 @@ package main;
 
 import db.UserDataSet;
 import db.UserDataSetDAO;
+import org.hibernate.HibernateException;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
@@ -146,6 +147,13 @@ public class AccountServiceImpl implements AccountService {
     private static SessionFactory createSessionFactory(Configuration configuration) {
         StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
         builder.applySettings(configuration.getProperties());
+        try {
+            ServiceRegistry serviceRegistry = builder.build();
+            return configuration.buildSessionFactory(serviceRegistry);
+        } catch(HibernateException e) {
+            System.err.println("Can't connect to MySQL");
+            System.exit(1);
+        }
         ServiceRegistry serviceRegistry = builder.build();
         return configuration.buildSessionFactory(serviceRegistry);
     }
