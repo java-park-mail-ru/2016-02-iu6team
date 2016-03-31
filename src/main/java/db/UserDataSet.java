@@ -54,11 +54,11 @@ public class UserDataSet implements Serializable {
     public void setEmail(@NotNull String email) { this.email = email; }
 
     @Override
-    public String toString() {
-        return "UserDataSet{" +
-                "id=" + id +
-                ", name='" + login + '\'' +
-                "email=" + email + '\'' +
-                '}';
+    public boolean equals(Object object) {
+        if (object == null) return false;
+        if (this.getClass() != object.getClass()) return false;
+        UserDataSet userTemp = (UserDataSet) object;
+        return ((this.id == userTemp.id) && (this.login.equals(userTemp.login)) && (this.email.equals(userTemp.email))
+                && (this.password.equals(userTemp.password)));
     }
 }

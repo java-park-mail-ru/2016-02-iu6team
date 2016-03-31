@@ -36,43 +36,47 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public List<UserDataSet> getAllUsers() {
-        Session session = sessionFactory.openSession();
-        UserDataSetDAO dao = new UserDataSetDAO(session);
-        return dao.getAllUsers();
+        try (Session session = sessionFactory.openSession()) {
+            UserDataSetDAO dao = new UserDataSetDAO(session);
+            return dao.getAllUsers();
+        }
     }
 
     @Override
     public boolean addUser(UserDataSet userProfile) {
-        Session session = sessionFactory.openSession();
-        UserDataSetDAO dao = new UserDataSetDAO(session);
-        if (dao.getUserByLogin(userProfile.getLogin()) != null || dao.getUserByEmail(userProfile.getEmail()) != null) {
-            return false;
-        } else {
-            dao.addUser(userProfile);
-            return true;
+        try (Session session = sessionFactory.openSession()) {
+            UserDataSetDAO dao = new UserDataSetDAO(session);
+            if (dao.getUserByLogin(userProfile.getLogin()) != null || dao.getUserByEmail(userProfile.getEmail()) != null) {
+                return false;
+            } else {
+                dao.addUser(userProfile);
+                return true;
+            }
         }
     }
 
     @Override
     public UserDataSet getUser(long id) {
-        Session session = sessionFactory.openSession();
-        UserDataSetDAO dao = new UserDataSetDAO(session);
-        return dao.getUser(id);
+        try (Session session = sessionFactory.openSession()) {
+            UserDataSetDAO dao = new UserDataSetDAO(session);
+            return dao.getUser(id);
+        }
     }
-
     @Override
     public UserDataSet getUserByLogin(String login) {
-        Session session = sessionFactory.openSession();
-        UserDataSetDAO dao = new UserDataSetDAO(session);
-        return dao.getUserByLogin(login);
+        try (Session session = sessionFactory.openSession()) {
+            UserDataSetDAO dao = new UserDataSetDAO(session);
+            return dao.getUserByLogin(login);
+        }
     }
 
     @Override
     public void editUser(long id, UserDataSet user, String sessionId){
-        Session session = sessionFactory.openSession();
-        UserDataSetDAO dao = new UserDataSetDAO(session);
-        dao.editUser(user, id);
-        sessions.replace(sessionId, user);
+        try (Session session = sessionFactory.openSession()) {
+            UserDataSetDAO dao = new UserDataSetDAO(session);
+            dao.editUser(user, id);
+            sessions.replace(sessionId, user);
+        }
     }
 
     @Override
@@ -88,9 +92,10 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public boolean isExists(@NotNull UserDataSet user) {
-        Session session = sessionFactory.openSession();
-        UserDataSetDAO dao = new UserDataSetDAO(session);
-        return (dao.getUserByLogin(user.getLogin()) != null);
+        try (Session session = sessionFactory.openSession()) {
+            UserDataSetDAO dao = new UserDataSetDAO(session);
+            return (dao.getUserByLogin(user.getLogin()) != null);
+        }
     }
 
     @Override
@@ -108,9 +113,10 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void deleteUser(long id) {
-        Session session = sessionFactory.openSession();
-        UserDataSetDAO dao = new UserDataSetDAO(session);
-        dao.deleteUser(id);
+        try (Session session = sessionFactory.openSession()) {
+            UserDataSetDAO dao = new UserDataSetDAO(session);
+            dao.deleteUser(id);
+        }
     }
 
     @Override
@@ -135,6 +141,7 @@ public class AccountServiceImpl implements AccountService {
         return jsonObject.toString();
     }
 
+    public Map<String, UserDataSet> getSessions() { return sessions; }
 
     private static SessionFactory createSessionFactory(Configuration configuration) {
         StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
