@@ -78,7 +78,7 @@ public class UnauthorizedUserTest extends JerseyTest {
     }
 
     @Before
-    public void setUpChild() throws Exception {
+    public void setUpChild() throws HibernateException {
         Configuration configuration = new Configuration();
 
         configuration.addAnnotatedClass(UserDataSet.class);
@@ -129,7 +129,7 @@ public class UnauthorizedUserTest extends JerseyTest {
     }
 
     @Test
-    public void testCreateUser() throws Exception {
+    public void testCreateUser() throws HibernateException {
         UserDataSet newUser = new UserDataSet();
         newUser.setLogin("admin");
         newUser.setEmail("admin@lalka.ru");
@@ -163,24 +163,6 @@ public class UnauthorizedUserTest extends JerseyTest {
         assertEquals(FORBIDDEN, actualResponse.getStatus());
     }
 
-//    @Test
-//    public void testEditUserFail() throws Exception {
-//        UserDataSet updatedUser = new UserDataSet();
-//        updatedUser.setLogin("user123");
-//        updatedUser.setEmail("user123@google.com");
-//        updatedUser.setPassword("000---000");
-//
-//        final Response actualResponse = target("user").path("2").request().post(Entity.json(updatedUser));
-//
-//        assertEquals(UNAUTHORIZED, actualResponse.getStatus());
-//    }
-
-//    @Test
-//    public void testDeleteUserFail() throws Exception {
-//        final Response actualResponse = target("user").path("2").request().delete();
-//
-//        assertEquals(UNAUTHORIZED, actualResponse.getStatus());
-//    }
 
     @Test
     public void testAuthorized() {

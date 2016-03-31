@@ -78,7 +78,7 @@ public class AuthorizedUserTest extends JerseyTest {
     }
 
     @Before
-    public void setUpChild() throws Exception {
+    public void setUpChild() throws HibernateException {
         Configuration configuration = new Configuration();
 
         configuration.addAnnotatedClass(UserDataSet.class);
@@ -139,7 +139,7 @@ public class AuthorizedUserTest extends JerseyTest {
     }
 
     @Test
-    public void testCreateUser() throws Exception {
+    public void testCreateUser() throws HibernateException {
         UserDataSet newUser = new UserDataSet();
         newUser.setLogin("admin");
         newUser.setEmail("admin@lalka.ru");
@@ -175,7 +175,7 @@ public class AuthorizedUserTest extends JerseyTest {
     }
 
     @Test
-    public void testEditMyself() throws Exception {
+    public void testEditMyself() throws HibernateException {
         UserDataSet updatedUser = new UserDataSet();
         updatedUser.setLogin("user321");
         updatedUser.setEmail("user321@google.com");
