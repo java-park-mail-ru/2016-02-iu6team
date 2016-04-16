@@ -86,7 +86,6 @@
             <artifactId>annotations</artifactId>
             <version>${org.jetbrains.annotations.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-server</artifactId>
@@ -97,7 +96,6 @@
             <artifactId>jetty-servlet</artifactId>
             <version>${org.eclipse.jetty.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.glassfish.jersey.core</groupId>
             <artifactId>jersey-server</artifactId>
@@ -117,11 +115,6 @@
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20160212</version>
-        </dependency>
-        <dependency>
-        <groupId>com.intellij</groupId>
-        <artifactId>annotations</artifactId>
-        <version>12.0</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -167,6 +160,11 @@
             <groupId>org.glassfish.jersey.test-framework.providers</groupId>
             <artifactId>jersey-test-framework-provider-external</artifactId>
             <version>2.22.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.intellij</groupId>
+            <artifactId>annotations</artifactId>
+            <version>12.0</version>
         </dependency>
     </dependencies>
 </project>

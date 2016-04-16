@@ -33,6 +33,7 @@ import static org.mockito.Mockito.when;
 /**
  * Created by anthony on 31.03.16.
  */
+@SuppressWarnings("MultipleVariablesInDeclaration")
 @FixMethodOrder(MethodSorters.JVM)
 public class UnauthorizedUserTest extends JerseyTest {
     private static final int BAD_REQUEST = 400,
@@ -63,16 +64,7 @@ public class UnauthorizedUserTest extends JerseyTest {
         final HttpServletRequest request = mock(HttpServletRequest.class);
         final HttpSession session = mock(HttpSession.class);
 
-        config.register(new AbstractBinder() {
-            @Override
-            protected void configure() {
-                bind(context);
-                bind(request).to(HttpServletRequest.class);
-                bind(session).to(HttpSession.class);
-                when(request.getSession()).thenReturn(session);
-                when(session.getId()).thenReturn("session");
-            }
-        });
+        config.register(new MyAbstractBinder(context, request, session));
 
         return config;
     }
@@ -193,5 +185,26 @@ public class UnauthorizedUserTest extends JerseyTest {
 
         final Response actualResponse = target("session").request().put(Entity.json(user));
         assertEquals(BAD_REQUEST, actualResponse.getStatus());
+    }
+
+    private static final class MyAbstractBinder extends AbstractBinder {
+        private final Context context;
+        private final HttpServletRequest request;
+        private final HttpSession session;
+
+        private MyAbstractBinder(Context context, HttpServletRequest request, HttpSession session) {
+            this.context = context;
+            this.request = request;
+            this.session = session;
+        }
+
+        @Override
+        protected void configure() {
+            bind(context);
+            bind(request).to(HttpServletRequest.class);
+            bind(session).to(HttpSession.class);
+            when(request.getSession()).thenReturn(session);
+            when(session.getId()).thenReturn("session");
+        }
     }
 }

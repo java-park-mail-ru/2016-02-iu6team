@@ -39,7 +39,6 @@
     <orderEntry type="library" name="Maven: org.eclipse.persistence:org.eclipse.persistence.asm:2.6.0" level="project" />
     <orderEntry type="library" name="Maven: org.glassfish:javax.json:1.0.4" level="project" />
     <orderEntry type="library" name="Maven: org.json:json:20160212" level="project" />
-    <orderEntry type="library" name="Maven: com.intellij:annotations:12.0" level="project" />
     <orderEntry type="library" name="Maven: junit:junit:4.12" level="project" />
     <orderEntry type="library" name="Maven: org.hamcrest:hamcrest-core:1.3" level="project" />
     <orderEntry type="library" name="Maven: org.mockito:mockito-all:1.9.0" level="project" />
@@ -68,5 +67,6 @@
     <orderEntry type="library" name="Maven: org.glassfish.jersey.test-framework:jersey-test-framework-core:2.22.2" level="project" />
     <orderEntry type="library" name="Maven: org.ow2.asm:asm-debug-all:5.0.4" level="project" />
     <orderEntry type="library" name="Maven: org.glassfish.jersey.test-framework.providers:jersey-test-framework-provider-external:2.22.2" level="project" />
+    <orderEntry type="library" name="Maven: com.intellij:annotations:12.0" level="project" />
   </component>
 </module>

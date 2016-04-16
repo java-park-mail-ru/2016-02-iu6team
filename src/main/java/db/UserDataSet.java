@@ -7,11 +7,14 @@ import java.io.Serializable;
 /**
  * author iu6team
  */
+@SuppressWarnings("EqualsAndHashcode")
 @Entity
 @Table(name = "Users")
 public class UserDataSet implements Serializable {
+    @SuppressWarnings("unused")
     private static final long serialVersionUID = -8706689714326132798L;
 
+    @SuppressWarnings("InstanceVariableNamingConvention")
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,6 +61,7 @@ public class UserDataSet implements Serializable {
         if (object == null) return false;
         if (this.getClass() != object.getClass()) return false;
         UserDataSet userTemp = (UserDataSet) object;
+        //noinspection OverlyComplexBooleanExpression
         return ((this.id == userTemp.id) && (this.login.equals(userTemp.login)) && (this.email.equals(userTemp.email))
                 && (this.password.equals(userTemp.password)));
     }

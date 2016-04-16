@@ -2,6 +2,7 @@ package rest;
 
 import db.UserDataSet;
 import main.AccountService;
+import org.json.JSONObject;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -18,6 +19,7 @@ import java.util.Collection;
 @Singleton
 @Path("/user")
 public class Users {
+    @SuppressWarnings("unused")
     @Inject
     private main.Context context;
 
@@ -40,7 +42,7 @@ public class Users {
             if (userTemp == null) {
                 return Response.status(Response.Status.FORBIDDEN).build();
             } else {
-                return Response.status(Response.Status.OK).entity(accountService.toJson(userTemp)).build();
+                return Response.status(Response.Status.OK).entity(toJson(userTemp)).build();
             }
         } else {
             return Response.status(Response.Status.UNAUTHORIZED).build();
@@ -53,7 +55,7 @@ public class Users {
     public Response createUser(UserDataSet user) {
         final AccountService accountService = context.get(AccountService.class);
         if (accountService.addUser(user)) {
-            return Response.status(Response.Status.OK).entity(accountService.getIdByJson(user.getId())).build();
+            return Response.status(Response.Status.OK).entity(getIdByJson(user.getId())).build();
         } else {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
@@ -69,9 +71,9 @@ public class Users {
         UserDataSet userTemp = accountService.getUserByLogin(accountService.giveProfileFromSessionId(sessionId).getLogin());
         if ((user != null) && (userTemp.getId() == accountService.getUser(id).getId())) {
             accountService.editUser(id, user, sessionId);
-            return Response.status(Response.Status.OK).entity(accountService.getIdByJson(id)).build();
+            return Response.status(Response.Status.OK).entity(getIdByJson(id)).build();
         } else {
-            return Response.status(Response.Status.FORBIDDEN).entity(accountService.toJsonError("wrong user")).build();
+            return Response.status(Response.Status.FORBIDDEN).entity(toJsonError("wrong user change")).build();
         }
     }
 
@@ -87,8 +89,27 @@ public class Users {
             accountService.deleteSession(sessionId);
             return Response.status(Response.Status.OK).build();
         } else {
-            return Response.status(Response.Status.FORBIDDEN).entity(accountService.toJsonError("wrong user")).build();
+            return Response.status(Response.Status.FORBIDDEN).entity(toJsonError("wrong user delete")).build();
         }
     }
 
+    public String getIdByJson(long id) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("id", id);
+        return jsonObject.toString();
+    }
+
+    public String toJson(UserDataSet user) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("id", user.getId());
+        jsonObject.put("login", user.getLogin());
+        jsonObject.put("email", user.getEmail());
+        return jsonObject.toString();
+    }
+
+    public String toJsonError(String error) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("error:", error);
+        return jsonObject.toString();
+    }
 }
