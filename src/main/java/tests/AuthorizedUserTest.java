@@ -34,10 +34,11 @@ import static org.junit.Assert.*;
 /**
  * Created by iu6team on 30.03.16.
  */
+@SuppressWarnings("MultipleVariablesInDeclaration")
 @FixMethodOrder(MethodSorters.JVM)
 public class AuthorizedUserTest extends JerseyTest {
-    private static final int UNAUTHORIZED = 401,
-                             FORBIDDEN = 403;
+    private static final int UNAUTHORIZED = 401;
+    private static final int FORBIDDEN = 403;
 
     private SessionFactory sessionFactory;
 
@@ -63,16 +64,7 @@ public class AuthorizedUserTest extends JerseyTest {
         final HttpServletRequest request = mock(HttpServletRequest.class);
         final HttpSession session = mock(HttpSession.class);
 
-        config.register(new AbstractBinder() {
-            @Override
-            protected void configure() {
-                bind(context);
-                bind(request).to(HttpServletRequest.class);
-                bind(session).to(HttpSession.class);
-                when(request.getSession()).thenReturn(session);
-                when(session.getId()).thenReturn("session");
-            }
-        });
+        config.register(new MyAbstractBinder(context, request, session));
 
         return config;
     }
@@ -95,8 +87,8 @@ public class AuthorizedUserTest extends JerseyTest {
         org.hibernate.Session session = sessionFactory.openSession();
         UserDataSetDAO dao = new UserDataSetDAO(session);
 
-        UserDataSet user1 = new UserDataSet(),
-                    user2 = new UserDataSet();
+        UserDataSet user1 = new UserDataSet();
+        UserDataSet user2 = new UserDataSet();
 
         user1.setLogin("user1");
         user1.setEmail("user1@mail.ru");
@@ -245,5 +237,26 @@ public class AuthorizedUserTest extends JerseyTest {
 
         final Response actualResponse = target("session").request().get();
         assertEquals(UNAUTHORIZED, actualResponse.getStatus());
+    }
+
+    private static final class MyAbstractBinder extends AbstractBinder {
+        private final Context context;
+        private final HttpServletRequest request;
+        private final HttpSession session;
+
+        private MyAbstractBinder(Context context, HttpServletRequest request, HttpSession session) {
+            this.context = context;
+            this.request = request;
+            this.session = session;
+        }
+
+        @Override
+        protected void configure() {
+            bind(context);
+            bind(request).to(HttpServletRequest.class);
+            bind(session).to(HttpSession.class);
+            when(request.getSession()).thenReturn(session);
+            when(session.getId()).thenReturn("session");
+        }
     }
 }

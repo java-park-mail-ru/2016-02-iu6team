@@ -2,6 +2,7 @@ package rest;
 
 import db.UserDataSet;
 import main.AccountService;
+import org.json.JSONObject;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -20,6 +21,7 @@ import javax.ws.rs.core.Response;
 @Singleton
 @Path("/session")
 public class Session {
+    @SuppressWarnings("unused")
     @Inject
     private main.Context context;
 
@@ -32,7 +34,7 @@ public class Session {
             UserDataSet userTemp = accountService.giveProfileFromSessionId(sessionId);
             if (accountService.isExists(userTemp)) {
                 long temp = accountService.getUserByLogin(userTemp.getLogin()).getId();
-                return Response.status(Response.Status.OK).entity(accountService.getIdByJson(temp)).build();
+                return Response.status(Response.Status.OK).entity(getIdByJson(temp)).build();
             }
         }
         return Response.status(Response.Status.UNAUTHORIZED).build();
@@ -47,7 +49,7 @@ public class Session {
             if (user.getPassword().equals(accountService.getUserByLogin(user.getLogin()).getPassword())) {
                 final String sessionId = request.getSession().getId();
                 accountService.addSession(sessionId, user);
-                return Response.status(Response.Status.OK).entity(accountService.getIdByJson(accountService.getUserByLogin(user.getLogin()).getId())).build();
+                return Response.status(Response.Status.OK).entity(getIdByJson(accountService.getUserByLogin(user.getLogin()).getId())).build();
             }
         }
         return Response.status(Response.Status.BAD_REQUEST).build();
@@ -60,5 +62,11 @@ public class Session {
         final String sessionId = request.getSession().getId();
         accountService.deleteSession(sessionId);
         return Response.status(Response.Status.OK).build();
+    }
+
+    public String getIdByJson(long id) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("id", id);
+        return jsonObject.toString();
     }
 }

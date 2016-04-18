@@ -18,6 +18,7 @@ public class Context {
 
     @NotNull
     public <T> T get(@NotNull Class<T> clazz){
+        //noinspection unchecked
         return (T) contextMap.get(clazz);
     }
 }

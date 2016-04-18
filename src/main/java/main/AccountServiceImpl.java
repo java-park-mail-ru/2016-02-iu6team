@@ -4,8 +4,6 @@ import db.UserDataSet;
 import db.UserDataSetDAO;
 import org.hibernate.HibernateException;
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONObject;
-
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.Map;
@@ -81,13 +79,9 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public boolean deleteSession(String sessionId){
-        if(checkAuth(sessionId)){
+    public void deleteSession(String sessionId){
+        if(checkAuth(sessionId)) {
             sessions.remove(sessionId);
-            return true;
-        }
-        else {
-            return false;
         }
     }
 
@@ -120,27 +114,6 @@ public class AccountServiceImpl implements AccountService {
         }
     }
 
-    @Override
-    public String getIdByJson(long id) {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("id", id);
-        return jsonObject.toString();
-    }
-
-    @Override
-    public String toJson(UserDataSet user) {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("id", user.getId());
-        jsonObject.put("login", user.getLogin());
-        jsonObject.put("email", user.getEmail());
-        return jsonObject.toString();
-    }
-    @Override
-    public String toJsonError(String error) {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("error:", error);
-        return jsonObject.toString();
-    }
 
     public Map<String, UserDataSet> getSessions() { return sessions; }
 

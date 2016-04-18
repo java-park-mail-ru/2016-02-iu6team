@@ -13,13 +13,10 @@ public interface AccountService {
     UserDataSet getUser(long id);
     UserDataSet getUserByLogin(String login);
     void editUser(long id, UserDataSet user, String sessionId);
-    boolean deleteSession(String sessionId);
+    void deleteSession(String sessionId);
     boolean isExists(@NotNull UserDataSet user);
     void addSession(String sessionId, UserDataSet user);
     boolean checkAuth(String sessionId);
     UserDataSet giveProfileFromSessionId(String sessionId);
     void deleteUser(long id);
-    String getIdByJson(long id);
-    String toJson(UserDataSet user);
-    String toJsonError(String error);
 }

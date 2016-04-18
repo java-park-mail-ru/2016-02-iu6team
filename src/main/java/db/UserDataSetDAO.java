@@ -18,6 +18,7 @@ public class UserDataSetDAO {
 
     public List<UserDataSet> getAllUsers() {
         Criteria criteria = session.createCriteria(UserDataSet.class);
+        //noinspection unchecked
         return (List<UserDataSet>) criteria.list();
     }
 
