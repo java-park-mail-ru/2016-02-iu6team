@@ -68,7 +68,7 @@ public class Users {
     public Response editUser(@PathParam("id") long id, UserDataSet user, @Context HttpServletRequest request) {
         final AccountService accountService = context.get(AccountService.class);
         final String sessionId = request.getSession().getId();
-        UserDataSet userTemp = accountService.getUserByLogin(accountService.giveProfileFromSessionId(sessionId).getLogin());
+        final UserDataSet userTemp = accountService.getUserByLogin(accountService.giveProfileFromSessionId(sessionId).getLogin());
         if ((user != null) && (userTemp.getId() == accountService.getUser(id).getId())) {
             accountService.editUser(id, user, sessionId);
             return Response.status(Response.Status.OK).entity(getIdByJson(id)).build();
@@ -83,7 +83,7 @@ public class Users {
     public Response deleteUser(@PathParam("id") long id, @Context HttpServletRequest request) {
         final AccountService accountService = context.get(AccountService.class);
         final String sessionId = request.getSession().getId();
-        UserDataSet user = accountService.getUserByLogin(accountService.giveProfileFromSessionId(sessionId).getLogin());
+        final UserDataSet user = accountService.getUserByLogin(accountService.giveProfileFromSessionId(sessionId).getLogin());
         if ((accountService.checkAuth(sessionId)) && (user.getId() == accountService.getUser(id).getId())) {
             accountService.deleteUser(id);
             accountService.deleteSession(sessionId);
@@ -94,13 +94,13 @@ public class Users {
     }
 
     public String getIdByJson(long id) {
-        JSONObject jsonObject = new JSONObject();
+        final JSONObject jsonObject = new JSONObject();
         jsonObject.put("id", id);
         return jsonObject.toString();
     }
 
     public String toJson(UserDataSet user) {
-        JSONObject jsonObject = new JSONObject();
+        final JSONObject jsonObject = new JSONObject();
         jsonObject.put("id", user.getId());
         jsonObject.put("login", user.getLogin());
         jsonObject.put("email", user.getEmail());
@@ -108,7 +108,7 @@ public class Users {
     }
 
     public String toJsonError(String error) {
-        JSONObject jsonObject = new JSONObject();
+        final JSONObject jsonObject = new JSONObject();
         jsonObject.put("error:", error);
         return jsonObject.toString();
     }

@@ -21,7 +21,7 @@ public class AccountServiceImpl implements AccountService {
     private final SessionFactory sessionFactory;
 
     public AccountServiceImpl() {
-        Configuration configuration = new Configuration();
+        final Configuration configuration = new Configuration();
         configuration.addAnnotatedClass(UserDataSet.class);
         configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
         configuration.setProperty("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");
@@ -36,7 +36,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public List<UserDataSet> getAllUsers() {
         try (Session session = sessionFactory.openSession()) {
-            UserDataSetDAO dao = new UserDataSetDAO(session);
+            final UserDataSetDAO dao = new UserDataSetDAO(session);
             return dao.getAllUsers();
         }
     }
@@ -44,7 +44,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public boolean addUser(UserDataSet userProfile) {
         try (Session session = sessionFactory.openSession()) {
-            UserDataSetDAO dao = new UserDataSetDAO(session);
+            final UserDataSetDAO dao = new UserDataSetDAO(session);
             if (dao.getUserByLogin(userProfile.getLogin()) != null || dao.getUserByEmail(userProfile.getEmail()) != null) {
                 return false;
             } else {
@@ -57,14 +57,14 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public UserDataSet getUser(long id) {
         try (Session session = sessionFactory.openSession()) {
-            UserDataSetDAO dao = new UserDataSetDAO(session);
+            final UserDataSetDAO dao = new UserDataSetDAO(session);
             return dao.getUser(id);
         }
     }
     @Override
     public UserDataSet getUserByLogin(String login) {
         try (Session session = sessionFactory.openSession()) {
-            UserDataSetDAO dao = new UserDataSetDAO(session);
+            final UserDataSetDAO dao = new UserDataSetDAO(session);
             return dao.getUserByLogin(login);
         }
     }
@@ -72,7 +72,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public void editUser(long id, UserDataSet user, String sessionId){
         try (Session session = sessionFactory.openSession()) {
-            UserDataSetDAO dao = new UserDataSetDAO(session);
+            final UserDataSetDAO dao = new UserDataSetDAO(session);
             dao.editUser(user, id);
             sessions.replace(sessionId, user);
         }
@@ -88,7 +88,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public boolean isExists(@NotNull UserDataSet user) {
         try (Session session = sessionFactory.openSession()) {
-            UserDataSetDAO dao = new UserDataSetDAO(session);
+            final UserDataSetDAO dao = new UserDataSetDAO(session);
             return (dao.getUserByLogin(user.getLogin()) != null);
         }
     }
@@ -109,7 +109,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public void deleteUser(long id) {
         try (Session session = sessionFactory.openSession()) {
-            UserDataSetDAO dao = new UserDataSetDAO(session);
+            final UserDataSetDAO dao = new UserDataSetDAO(session);
             dao.deleteUser(id);
         }
     }
@@ -118,10 +118,10 @@ public class AccountServiceImpl implements AccountService {
     public Map<String, UserDataSet> getSessions() { return sessions; }
 
     private static SessionFactory createSessionFactory(Configuration configuration) {
-        StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
+        final StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
         builder.applySettings(configuration.getProperties());
         try {
-            ServiceRegistry serviceRegistry = builder.build();
+            final ServiceRegistry serviceRegistry = builder.build();
             return configuration.buildSessionFactory(serviceRegistry);
         } catch(HibernateException e) {
             System.err.println("Can't connect to MySQL " + e);
