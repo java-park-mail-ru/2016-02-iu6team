@@ -60,7 +60,7 @@ public class UserDataSet implements Serializable {
     public boolean equals(Object object) {
         if (object == null) return false;
         if (this.getClass() != object.getClass()) return false;
-        UserDataSet userTemp = (UserDataSet) object;
+        final UserDataSet userTemp = (UserDataSet) object;
         //noinspection OverlyComplexBooleanExpression
         return ((this.id == userTemp.id) && (this.login.equals(userTemp.login)) && (this.email.equals(userTemp.email))
                 && (this.password.equals(userTemp.password)));

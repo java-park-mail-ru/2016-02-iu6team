@@ -31,9 +31,9 @@ public class Session {
         final AccountService accountService = context.get(AccountService.class);
         final String sessionId = request.getSession().getId();
         if (accountService.checkAuth(sessionId)) {
-            UserDataSet userTemp = accountService.giveProfileFromSessionId(sessionId);
+            final UserDataSet userTemp = accountService.giveProfileFromSessionId(sessionId);
             if (accountService.isExists(userTemp)) {
-                long temp = accountService.getUserByLogin(userTemp.getLogin()).getId();
+                final long temp = accountService.getUserByLogin(userTemp.getLogin()).getId();
                 return Response.status(Response.Status.OK).entity(getIdByJson(temp)).build();
             }
         }
@@ -65,7 +65,7 @@ public class Session {
     }
 
     public String getIdByJson(long id) {
-        JSONObject jsonObject = new JSONObject();
+        final JSONObject jsonObject = new JSONObject();
         jsonObject.put("id", id);
         return jsonObject.toString();
     }

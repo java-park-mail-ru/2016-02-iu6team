@@ -43,10 +43,10 @@ public class UnauthorizedUserTest extends JerseyTest {
     private SessionFactory sessionFactory;
 
     private static SessionFactory createSessionFactory(Configuration configuration) {
-        StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
+        final StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
         builder.applySettings(configuration.getProperties());
         try {
-            ServiceRegistry serviceRegistry = builder.build();
+            final ServiceRegistry serviceRegistry = builder.build();
             return configuration.buildSessionFactory(serviceRegistry);
         } catch(HibernateException e) {
             System.err.println("Can't connect to MySQL " + e);
@@ -71,7 +71,7 @@ public class UnauthorizedUserTest extends JerseyTest {
 
     @Before
     public void setUpChild() throws HibernateException {
-        Configuration configuration = new Configuration();
+        final Configuration configuration = new Configuration();
 
         configuration.addAnnotatedClass(UserDataSet.class);
         configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
@@ -84,11 +84,11 @@ public class UnauthorizedUserTest extends JerseyTest {
 
         sessionFactory = createSessionFactory(configuration);
 
-        org.hibernate.Session session = sessionFactory.openSession();
-        UserDataSetDAO dao = new UserDataSetDAO(session);
+        final org.hibernate.Session session = sessionFactory.openSession();
+        final UserDataSetDAO dao = new UserDataSetDAO(session);
 
-        UserDataSet user1 = new UserDataSet(),
-                user2 = new UserDataSet();
+        final UserDataSet user1 = new UserDataSet();
+        final UserDataSet user2 = new UserDataSet();
 
         user1.setLogin("user1");
         user1.setEmail("user1@mail.ru");
@@ -122,7 +122,7 @@ public class UnauthorizedUserTest extends JerseyTest {
 
     @Test
     public void testCreateUser() throws HibernateException {
-        UserDataSet newUser = new UserDataSet();
+        final UserDataSet newUser = new UserDataSet();
         newUser.setLogin("admin");
         newUser.setEmail("admin@lalka.ru");
         newUser.setPassword("123321");
@@ -132,8 +132,8 @@ public class UnauthorizedUserTest extends JerseyTest {
 
         assertEquals(expectedJSON, actualJSON);
 
-        org.hibernate.Session testSession = sessionFactory.openSession();
-        UserDataSetDAO dao = new UserDataSetDAO(testSession);
+        final org.hibernate.Session testSession = sessionFactory.openSession();
+        final UserDataSetDAO dao = new UserDataSetDAO(testSession);
 
         dao.getUser(3);
         assertEquals("admin", newUser.getLogin());
@@ -145,7 +145,7 @@ public class UnauthorizedUserTest extends JerseyTest {
 
     @Test
     public void testCreateExistUserFail() throws Exception {
-        UserDataSet newUser = new UserDataSet();
+        final UserDataSet newUser = new UserDataSet();
         newUser.setLogin("user1");
         newUser.setEmail("user1@mail.ru");
         newUser.setPassword("12345");
