@@ -28,11 +28,10 @@ public class AccountServiceImplTest {
     private SessionFactory sessionFactory;
     private UserDataSet admin;
     private UserDataSet test;
-
     @Before
     public void setUp() throws HibernateException {
-        accountService = new AccountServiceImpl();
-
+        accountService = new AccountServiceImpl("javaDB","localhost",
+                3306,"root","1");
         final Configuration configuration = new Configuration();
         configuration.addAnnotatedClass(UserDataSet.class);
         configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
