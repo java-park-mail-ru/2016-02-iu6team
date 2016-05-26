@@ -1,6 +1,5 @@
 package mechanic;
 
-import org.json.JSONObject;
 import websocket.GameWebSocket;
 
 import java.util.Map;
@@ -28,19 +27,6 @@ public class GameMechanic {
     }
 
     public void onMessage(String username, String message) {
-        final Lobby lobby = userToLobby.get(username);
-        final JSONObject jsonObject = new JSONObject(message);
-        final String command = jsonObject.getString("command");
-//        switch (command) {
-//            case "nextTurn":
-//                nextTurn(lobby, jsonObject.getJSONArray("cards"));
-//                break;
-//            case "nextRound":
-//                nextRound(lobby, username);
-//                break;
-//            default:
-//                break;
-//        }
     }
 
 }

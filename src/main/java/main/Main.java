@@ -21,7 +21,7 @@ public class Main {
     private static final String CONFIG = "cfg/server.properties";
 
     public static void main(String[] args) throws Exception {
-        final Configuration configuration;
+        final Configuration configuration; //try catch
         configuration = new Configuration(CONFIG);
         final GameMechanic gameMechanic = new GameMechanic();
         int port = configuration.getPort();
