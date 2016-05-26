@@ -12,26 +12,25 @@ import rest.Users;
 import rest.Session;
 import websocket.GameWebSocketServlet;
 
+
 /**
  * @author iu6team
  */
 public class Main {
     @SuppressWarnings("OverlyBroadThrowsClause")
+    private static final String CONFIG = "cfg/server.properties";
+
     public static void main(String[] args) throws Exception {
-        int port = -1;
+        final Configuration configuration;
+        configuration = new Configuration(CONFIG);
         final GameMechanic gameMechanic = new GameMechanic();
-        if (args.length == 1) {
-            port = Integer.valueOf(args[0]);
-        } else {
-            System.err.println("Specify port");
-            System.exit(1);
-        }
+        int port = configuration.getPort();
         System.out.append("Starting at port: ").append(String.valueOf(port)).append('\n');
         final Server server = new Server(port);
         final ServletContextHandler contextHandler = new ServletContextHandler(server, "/api/", ServletContextHandler.SESSIONS);
         final Context context = new Context();
-
-        context.put(AccountService.class, new AccountServiceImpl());
+        context.put(AccountService.class, new AccountServiceImpl(configuration.getDbName(),configuration.getDbHost(),
+                configuration.getDbPort(),configuration.getDbUsername(),configuration.getDbPassword()));
         final ResourceConfig config = new ResourceConfig(Users.class, Session.class);
         config.register(new AbstractBinder() {
             @Override

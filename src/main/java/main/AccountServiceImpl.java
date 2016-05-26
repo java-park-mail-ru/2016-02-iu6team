@@ -20,14 +20,14 @@ public class AccountServiceImpl implements AccountService {
     private final Map<String, UserDataSet> sessions = new ConcurrentHashMap<>();
     private final SessionFactory sessionFactory;
 
-    public AccountServiceImpl() {
+    public AccountServiceImpl(String name, String host, int port, String username, String password) {
         final Configuration configuration = new Configuration();
         configuration.addAnnotatedClass(UserDataSet.class);
         configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
         configuration.setProperty("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");
-        configuration.setProperty("hibernate.connection.url", "jdbc:mysql://localhost:3306/javaDB");
-        configuration.setProperty("hibernate.connection.username", "root");
-        configuration.setProperty("hibernate.connection.password", "1");
+        configuration.setProperty("hibernate.connection.url", "jdbc:mysql://"+host+':'+port+'/'+name);
+        configuration.setProperty("hibernate.connection.username", username);
+        configuration.setProperty("hibernate.connection.password", password);
         configuration.setProperty("hibernate.show_sql", "true");
         configuration.setProperty("hibernate.hbm2ddl.auto", "create");
         sessionFactory = createSessionFactory(configuration);

@@ -58,7 +58,8 @@ public class UnauthorizedUserTest extends JerseyTest {
     @Override
     protected Application configure() {
         final Context context = new Context();
-        context.put(AccountService.class, new AccountServiceImpl());
+        context.put(AccountService.class, new AccountServiceImpl("javaDB","localhost",
+                3306,"root","1"));
 
         final ResourceConfig config = new ResourceConfig(Users.class, Session.class);
         final HttpServletRequest request = mock(HttpServletRequest.class);
